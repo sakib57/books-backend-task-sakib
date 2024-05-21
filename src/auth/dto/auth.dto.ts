@@ -10,7 +10,7 @@ import {
 } from 'class-validator';
 
 @InputType()
-export class CreateUserDTO implements Readonly<CreateUserDTO> {
+export class AuthDTO implements Readonly<AuthDTO> {
   @Field()
   @IsEmail()
   @IsNotEmpty()

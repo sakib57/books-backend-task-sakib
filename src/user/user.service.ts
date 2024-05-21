@@ -8,15 +8,16 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { User, UserDocument } from './user.entity';
+import { UserDocument } from './user.entity';
 import { CreateUserDTO, UpdateUserDTO, UserDTO } from './dto';
+import { IUser } from './user.interface';
 
 @Injectable()
 export class UserService {
   constructor(@InjectModel('User') private userModel: Model<UserDocument>) {}
 
   // User Creation
-  async create(cUserDTO: CreateUserDTO): Promise<User> {
+  async create(cUserDTO: CreateUserDTO): Promise<IUser> {
     try {
       const userDTO = new UserDTO();
       userDTO.email = cUserDTO.email.toLocaleLowerCase();
@@ -30,7 +31,11 @@ export class UserService {
       }
       userDTO.password = bcrypt.hashSync(cUserDTO.password, 8);
       const registerModel = new this.userModel(userDTO);
-      return await registerModel.save();
+      const newUser = await registerModel.save();
+
+      return {
+        email: newUser?.email,
+      };
     } catch (err) {
       throw new HttpException(err, err.status || HttpStatus.BAD_REQUEST);
     }
