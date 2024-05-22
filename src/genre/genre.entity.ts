@@ -8,8 +8,8 @@ export type GenreDocument = Genre & Document;
 @Schema()
 export class Genre {
   @Field()
-  @Prop({ required: true })
+  @Prop({ required: true, unique: true })
   name: string;
 }
 
-export const GenrerSchema = SchemaFactory.createForClass(Genre);
+export const GenreSchema = SchemaFactory.createForClass(Genre);

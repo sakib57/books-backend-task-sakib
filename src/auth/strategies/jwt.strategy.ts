@@ -10,17 +10,19 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private authService: AuthService) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
-        JwtStrategy.extractJWT,
+        JwtStrategy.extractJWTFromCookie,
         ExtractJwt.fromAuthHeaderAsBearerToken(),
       ]),
+      ignoreExpiration: false,
       secretOrKey: process.env.JWT_SECRET_KEY,
     });
   }
 
-  private static extractJWT(req: RequestType): string | null {
-    if (req.cookies && 'token' in req.cookies && req.cookies.token.length > 0) {
+  private static extractJWTFromCookie(req: RequestType): string | null {
+    if (req.cookies && req.cookies.token) {
       return req.cookies.token;
     }
+    return null;
   }
 
   async validate(payload: any) {
