@@ -1,6 +1,6 @@
 import { ObjectType, Field } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { userType } from 'common/constant';
+import { UserRoles } from 'common/constant';
 
 export type UserDocument = User & Document;
 
@@ -24,7 +24,7 @@ export class User {
   password: string;
 
   @Field()
-  @Prop({ default: userType.VIEWER })
+  @Prop({ default: UserRoles.USER })
   role: string;
 }
 
