@@ -11,19 +11,19 @@ export class User {
   @Prop({ required: true, unique: true })
   email: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Prop()
   firstName: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Prop()
   lastName: string;
 
   @Field()
-  @Prop({ required: true })
+  @Prop()
   password: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Prop({ default: UserRoles.USER })
   role: string;
 }

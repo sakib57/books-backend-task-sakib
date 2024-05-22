@@ -9,6 +9,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { AuthController } from './auth.controller';
 import 'dotenv/config';
 import { RolesGuard } from './guards';
+import { AuthResolver } from './auth.resolver';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { RolesGuard } from './guards';
       },
     }),
   ],
-  providers: [AuthService, UserService, JwtStrategy, RolesGuard],
+  providers: [AuthResolver, AuthService, UserService, JwtStrategy, RolesGuard],
   controllers: [AuthController],
 })
 export class AuthModule {}

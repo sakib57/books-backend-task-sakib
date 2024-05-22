@@ -11,7 +11,7 @@ export class Author {
   @Prop({ required: true })
   name: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Prop()
   bio: string;
 }
