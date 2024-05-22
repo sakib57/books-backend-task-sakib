@@ -1,6 +1,6 @@
 import { InputType, Field } from '@nestjs/graphql';
 import { IsEnum, IsString } from 'class-validator';
-import { userType } from 'common/constant';
+import { UserRoles } from 'common/constant';
 
 @InputType()
 export class UpdateUserDTO implements Readonly<UpdateUserDTO> {
@@ -14,6 +14,6 @@ export class UpdateUserDTO implements Readonly<UpdateUserDTO> {
 
   @Field()
   @IsString()
-  @IsEnum(userType)
+  @IsEnum(UserRoles)
   role: string;
 }

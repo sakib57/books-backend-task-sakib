@@ -15,10 +15,12 @@ import {
   ApiTags,
   ApiHeader,
 } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { CreateBookDTO } from './dto';
 import { IBook } from './Book-interface';
 import { BookService } from './book.service';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { UserRoles } from 'common/constant';
+import { JwtAuthGuard, RolesGuard } from 'src/auth/guards';
 
 /**
  * Book Controller
@@ -63,7 +65,8 @@ export class BookController {
     status: HttpStatus.NOT_ACCEPTABLE,
     description: 'Record already exist',
   })
-  @UseGuards(JwtAuthGuard)
+  @Roles(UserRoles.ADMIN, UserRoles.EDITOR)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Post('add')
   public async create(@Body() cBookDTO: CreateBookDTO): Promise<IBook> {
     try {

@@ -8,7 +8,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { userType } from 'common/constant';
+import { UserRoles } from 'common/constant';
 
 @InputType()
 export class UserDTO implements Readonly<UserDTO> {
@@ -35,6 +35,6 @@ export class UserDTO implements Readonly<UserDTO> {
 
   @Field()
   @IsString()
-  @IsEnum(userType)
+  @IsEnum(UserRoles)
   role: string;
 }
