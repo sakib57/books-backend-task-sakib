@@ -11,7 +11,14 @@ import 'dotenv/config';
 
 const DATABASE_URL = process.env.DATABASE_URL;
 @Module({
-  imports: [MongooseModule.forRoot(DATABASE_URL), UserModule, AuthModule, AuthorModule, BookModule, GenreModule],
+  imports: [
+    MongooseModule.forRoot(DATABASE_URL),
+    UserModule,
+    AuthModule,
+    AuthorModule,
+    BookModule,
+    GenreModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

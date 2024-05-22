@@ -3,14 +3,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
 
 @InputType()
-export class CreateAuthorDTO implements Readonly<CreateAuthorDTO> {
+export class GenreDTO implements Readonly<GenreDTO> {
   @Field()
   @IsString()
   @ApiProperty()
   name: string;
-
-  @Field()
-  @IsString()
-  @ApiProperty()
-  bio: string;
 }
