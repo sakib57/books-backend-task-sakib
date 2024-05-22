@@ -4,12 +4,18 @@ import {
   Body,
   HttpStatus,
   HttpException,
+  Patch,
+  Param,
+  UseGuards,
 } from '@nestjs/common';
 
 import { ApiResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
-import { CreateUserDTO } from './dto';
+import { CreateUserDTO, UpdateUserDTO } from './dto';
 import { IUser } from './user.interface';
+import { UserRoles } from 'common/constant';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { JwtAuthGuard, RolesGuard } from 'src/auth/guards';
 
 /**
  * User Controller
@@ -53,6 +59,34 @@ export class UserController {
   public async register(@Body() createUserDTO: CreateUserDTO): Promise<IUser> {
     try {
       return await this.usersService.create(createUserDTO);
+    } catch (err) {
+      throw new HttpException(err, err.status || HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  /**
+   * Update a user
+   * @Body {UpdateUserDTO} updateUserDTO
+   * @returns {Promise<IUser>} updated user data
+   */
+  @ApiOperation({ summary: 'User updation: update a user' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Return Updated user.',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Invalid data',
+  })
+  @Roles(UserRoles.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Patch(':id')
+  public async update(
+    @Param('id') id: any,
+    @Body() updateUserDTO: UpdateUserDTO,
+  ): Promise<IUser> {
+    try {
+      return await this.usersService.update(id, updateUserDTO);
     } catch (err) {
       throw new HttpException(err, err.status || HttpStatus.BAD_REQUEST);
     }

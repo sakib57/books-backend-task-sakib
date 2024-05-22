@@ -8,11 +8,18 @@ import { AuthorModule } from './author/author.module';
 import { BookModule } from './book/book.module';
 import { GenreModule } from './genre/genre.module';
 import 'dotenv/config';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 const DATABASE_URL = process.env.DATABASE_URL;
 @Module({
   imports: [
     MongooseModule.forRoot(DATABASE_URL),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: true,
+      context: ({ req }) => ({ req }),
+    }),
     UserModule,
     AuthModule,
     AuthorModule,

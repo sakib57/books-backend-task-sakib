@@ -1,6 +1,7 @@
 import {
   Controller,
   Post,
+  Get,
   Body,
   UseGuards,
   HttpStatus,
@@ -16,7 +17,9 @@ import {
 import { GenreService } from './genre.service';
 import { CreateGenreDTO } from './dto';
 import { IGenre } from './genre.interface';
-import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import { JwtAuthGuard, RolesGuard } from 'src/auth/guards';
+import { UserRoles } from 'common/constant';
+import { Roles } from 'src/auth/decorators/roles.decorator';
 
 /**
  * Genre Controller
@@ -61,11 +64,26 @@ export class GenreController {
     status: HttpStatus.NOT_ACCEPTABLE,
     description: 'Record already exist',
   })
-  @UseGuards(JwtAuthGuard)
+  @Roles(UserRoles.ADMIN, UserRoles.EDITOR)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Post('add')
   public async create(@Body() cGenreDTO: CreateGenreDTO): Promise<IGenre> {
     try {
       return await this.genreService.create(cGenreDTO);
+    } catch (err) {
+      throw new HttpException(err, err.status || HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  /**
+   * Genre List
+   * @returns {Promise<IGenre[]>}
+   */
+  @ApiOperation({ summary: 'Genre List' })
+  @Get()
+  public async findAll(): Promise<IGenre[]> {
+    try {
+      return this.genreService.findAll();
     } catch (err) {
       throw new HttpException(err, err.status || HttpStatus.BAD_REQUEST);
     }

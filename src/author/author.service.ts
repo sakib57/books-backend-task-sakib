@@ -28,6 +28,14 @@ export class AuthorService {
   }
 
   /**
+   * Author List
+   * @returns {Promise<IAuthor[]>}
+   */
+  async findAll(): Promise<IAuthor[]> {
+    return await this.authorModel.find();
+  }
+
+  /**
    * Update state
    * @param {UpdateAuthorDTO} uAuthorDTO
    * @returns {Promise<IAuthor>}

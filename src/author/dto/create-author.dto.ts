@@ -9,7 +9,7 @@ export class CreateAuthorDTO implements Readonly<CreateAuthorDTO> {
   @ApiProperty()
   name: string;
 
-  @Field()
+  @Field({ nullable: true })
   @IsString()
   @ApiProperty()
   bio: string;

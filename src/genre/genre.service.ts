@@ -27,6 +27,14 @@ export class GenreService {
   }
 
   /**
+   * Genere List
+   * @returns {Promise<IGenre[]>}
+   */
+  async findAll(): Promise<IGenre[]> {
+    return await this.genreModel.find();
+  }
+
+  /**
    * Update state
    * @param {UpdateGenreDTO} uGenreDTO
    * @returns {Promise<IGenre>}

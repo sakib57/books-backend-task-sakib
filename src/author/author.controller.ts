@@ -1,6 +1,7 @@
 import {
   Controller,
   Post,
+  Get,
   Body,
   UseGuards,
   HttpStatus,
@@ -13,10 +14,12 @@ import {
   ApiTags,
   ApiHeader,
 } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { AuthorService } from './author.service';
 import { CreateAuthorDTO } from './dto';
 import { IAuthor } from './author-interface';
+import { UserRoles } from 'common/constant';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { JwtAuthGuard, RolesGuard } from 'src/auth/guards';
 
 /**
  * Author Controller
@@ -61,11 +64,26 @@ export class AuthorController {
     status: HttpStatus.NOT_ACCEPTABLE,
     description: 'Record already exist',
   })
-  @UseGuards(JwtAuthGuard)
+  @Roles(UserRoles.ADMIN, UserRoles.EDITOR)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Post('add')
   public async create(@Body() cAuthorDTO: CreateAuthorDTO): Promise<IAuthor> {
     try {
       return await this.authorService.create(cAuthorDTO);
+    } catch (err) {
+      throw new HttpException(err, err.status || HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  /**
+   * Author List
+   * @returns {Promise<IGenre[]>}
+   */
+  @ApiOperation({ summary: 'Author List' })
+  @Get()
+  public async findAll(): Promise<IAuthor[]> {
+    try {
+      return this.authorService.findAll();
     } catch (err) {
       throw new HttpException(err, err.status || HttpStatus.BAD_REQUEST);
     }

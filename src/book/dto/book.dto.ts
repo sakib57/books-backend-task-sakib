@@ -15,7 +15,7 @@ export class BookDTO implements Readonly<BookDTO> {
   @ApiProperty()
   author: string;
 
-  @Field()
+  @Field(() => [String], { nullable: true })
   @IsArray()
   @ApiProperty()
   genres: [string];
@@ -25,7 +25,7 @@ export class BookDTO implements Readonly<BookDTO> {
   @IsNumber()
   publishedDate: number;
 
-  @Field()
+  @Field({ nullable: true })
   @IsString()
   @ApiProperty()
   summary: string;
